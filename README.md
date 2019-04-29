@@ -38,6 +38,22 @@ How we deploy our NiFi stateful application on AWS k8s
 
 For any questions, please drop an email to devopsac@gmail.com
 
+**How to Deploy**
+
+- kubectl --kubeconfig kubeconfig.yaml apply --insecure-skip-tls-verify=true -f kubenetes/${context}/statefulset.yaml"
+- sh "wget <repo_url>/build/deploy/controller_services.py"
+- sh "wget <repo_url>/build/deploy/deploy_nifi.py"
+- sh "wget <repo_url>/build/deploy/DeployTemplateBase.py"
+- sh "wget <repo_url>/build/deploy/parse_yaml.py"
+- sh "wget <repo_url>/build/deploy/setup_connection.py"
+//sh "wget <repo_url>/build/deploy/requirements.txt"
+- sh "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py; sudo python get-pip.py"
+- sh "sudo pip install gitpython"
+- sh "sudo yum install -y epel-release jq"
+//sh "sudo pip install -r requirements.txt"
+- sh "python deploy_nifi.py ${nifiUrl} ${serviceName} ${WORKSPACE}" 
+}
+
 **Note**
 
 There is some cleanup to do, this files will work as. I have been using them in production for over a year.
