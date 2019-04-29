@@ -1,7 +1,7 @@
 
 **kubernetes-nifi-cluster**
 
-A nifi cluster running in kubernetes
+A nifi cluster running in kubernetes.
 
 I have tested it in nifi 1.7, will try it with 1.9 soon.
 
@@ -23,7 +23,9 @@ I have tested it in nifi 1.7, will try it with 1.9 soon.
 
 - All the custom processors jar sit in build/custom_processors
 
-- All properties file relating to the application reside in config
+- All properties files go in config directory
+
+- All templates xml files go in templates directory
 
 
 **Follow below steps to setup NiFi environment:**
@@ -33,8 +35,6 @@ How we deploy our NiFi stateful application on AWS k8s
 - Update **line 54** in statefulset.yaml file (located under **_kube**) to point to the right url **(RAW URL)**
 
 - Put your NiFi templates in **templates** directory and properties file in **config** directory
-
-I am working on cleaning up jenkins functions and will posting them as well.
 
 For any questions, please drop an email to devopsac@gmail.com
 
