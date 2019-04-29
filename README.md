@@ -38,4 +38,5 @@ I am working on cleaning up jenkins functions and will posting them as well.
 
 For any questions, please drop an email to devopsac@gmail.com
 
-Note: there is some cleanup to do, i am going fix it soon, this files as it will work. I have been using them in production for over a year.
+**Note**
+There is some cleanup to do, this files will work as. I have been using them in production for over a year.
