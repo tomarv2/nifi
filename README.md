@@ -40,7 +40,7 @@ For any questions, please drop an email to devopsac@gmail.com
 
 **How to Deploy**
 
-- kubectl --kubeconfig kubeconfig.yaml apply --insecure-skip-tls-verify=true -f kubenetes/${context}/statefulset.yaml"
+- kubectl --kubeconfig kubeconfig.yaml apply --insecure-skip-tls-verify=true -f _kube/statefulset.yaml"
 - sh "wget <repo_url>/build/deploy/controller_services.py"
 - sh "wget <repo_url>/build/deploy/deploy_nifi.py"
 - sh "wget <repo_url>/build/deploy/DeployTemplateBase.py"
