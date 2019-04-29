@@ -1,0 +1,113 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: sample-sync
+  namespace: engr
+spec:
+  serviceName: sample-sync-headless
+  replicas: 2
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        cluster: sample-sync
+      annotations:
+        ad.datadoghq.com/sample-sync.logs: '[{"source":"nifi", "service":"sample-sync", "sourcecategory":"sourcecode", "log_processing_rules":[{"type": "multi_line","name": "parsing_pattern","pattern": "^\\s{0,1}(INFO|ERROR|WARN|DEBUG|[0-9]{3}.|\\[)"}]}]'
+        ad.datadoghq.com/sample-sync.check_names: '["prometheus"]'
+        ad.datadoghq.com/sample-sync.init_configs: '[{}]'
+        ad.datadoghq.com/sample-sync.instances: '[{"prometheus_url": "http://%%host%%:8079/metrics", "namespace": "nifi", "metrics": [ "*"], "tags": ["hostname:%%host%%"]}]'
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "cluster"
+                    operator: In
+                    values:
+                    - sample-sync
+              topologyKey: "kubernetes.io/hostname"
+      imagePullSecrets:
+      - name: aws-ecr-registry
+      containers:
+      - name: sample-sync
+        image: devops.dkr.ecr.us-west-2.amazonaws.com/devops/nifi-1.7.0:v16-stateful
+        env:
+        - name: CLUSTER_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        command:
+          - "/bin/sh"
+          - "-c"
+          - >
+            set -x;
+            chmod +x /opt/deploy/configure_statefulset.sh;
+            /opt/deploy/configure_statefulset.sh;
+            echo 'nameserver x.x.x.x' > /etc/resolv.conf;
+            echo "search sample-sync-headless.${CLUSTER_NAMESPACE}.svc.cluster.local ${CLUSTER_NAMESPACE}.svc.cluster.local svc.cluster.local cluster.local" >> /etc/resolv.conf;
+            echo 'options ndots:5' >> /etc/resolv.conf;
+            sed -i -e "s|^nifi.web.http.host=.*$|nifi.web.http.host=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.remote.input.host=.*$|nifi.remote.input.host=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.cluster.node.address=.*$|nifi.cluster.node.address=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            echo "### DO NOT CHANGE ANYTHING ABOVE THIS LINE ###" > /dev/null;
+            wget http://<application url> -O /tmp/application.properties;
+            sed -i -e "s|^nifi.variable.registry.properties=.*$|nifi.variable.registry.properties=/tmp/application.properties|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.zookeeper.connect.string=.*$|nifi.zookeeper.connect.string=zk.devops.com:2181|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.zookeeper.root.node=.*$|nifi.zookeeper.root.node=/sample-sync|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^java.arg.2=.*$|java.arg.2=-Xms2g|" /opt/nifi/nifi-1.7.0/conf/bootstrap.conf;
+            sed -i -e "s|^java.arg.3=.*$|java.arg.3=-Xmx2g|" /opt/nifi/nifi-1.7.0/conf/bootstrap.conf;
+            /opt/nifi/nifi-1.7.0/bin/nifi.sh run
+        securityContext:
+          privileged: true
+        ports:
+         - name: prometheus-jmx
+           containerPort: 8079
+         - name: web
+           containerPort: 8080
+         - name: cluster
+           containerPort: 8082
+         - name: misc
+           containerPort: 9001
+         - name: jmx
+           containerPort: 30007
+        livenessProbe:
+           httpGet:
+             path: /nifi
+             port: 8080
+           initialDelaySeconds: 120
+           periodSeconds: 30
+           timeoutSeconds: 5
+           successThreshold: 1
+           failureThreshold: 20
+        readinessProbe:
+           httpGet:
+             path: /nifi
+             port: 8080
+           periodSeconds: 30
+           initialDelaySeconds: 120
+           timeoutSeconds: 5
+           successThreshold: 1
+           failureThreshold: 5
+        volumeMounts:
+          - name: repositories
+            mountPath: /mnt
+        resources:
+          requests:
+            cpu: 2
+            memory: 4Gi
+          limits:
+            cpu: 2
+            memory: 4Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: repositories
+      annotations:
+        volume.beta.kubernetes.io/storage-class: gp2
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 25Gi

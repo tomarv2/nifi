@@ -1,0 +1,8 @@
+---
+lowercaseOutputName: true
+
+rules:
+  - pattern: "kafka.*"
+    type: GAUGE
+  - pattern: "java.*"
+    type: GAUGE
