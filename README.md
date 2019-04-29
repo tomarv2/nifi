@@ -9,7 +9,7 @@ I have tested it in nifi 1.7, will try it with 1.9 soon.
 
 - A running zookeeper cluster, for production deployment I would recommend a 3 node zk cluzter
 
-- This deploy NIFI on AWS EC2 k8s with PV
+- This deploy NIFI on AWS EC2 k8s with PV or on k8s in VMWare
 
 - All this exposes your nifi metrics in prometheus format in case you want to view them
 
