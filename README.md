@@ -108,11 +108,11 @@ steps {
 
 - Update  `_kube/statefulset.yaml` with right information
 
+- You will notice the `annotations` in `Statefulset.yaml` file, we are exporting metrics and logs to Datadog
+
 - `nifi_setup_1.11.4_stateful/build/deploy/nifi.sh` points to custom `logback.xml` file
 
 - Custom `logback.xml` to handle log in log issue with nifi logs(not sure if this is resolved in the latest version)
-
-- You will notice the `annotations` in `Statefulset.yaml` file, we are exporting metrics and logs to Datadog
 
 **Tip**
 
