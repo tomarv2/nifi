@@ -12,7 +12,7 @@ How to deploy a NiFi Cluster (Stateful app in k8s)
 - Prometheus
 ***
 
-**Repo is structured**
+**Repo structure**
 
 Repo is divided into two parts: "k8s stateful deployment" and "building NiFi docker image".
 - k8s cluster deployment related files are in `_kube` directory
