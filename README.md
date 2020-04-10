@@ -12,9 +12,20 @@ How to deploy a NiFi Cluster (Stateful app in k8s)
 - Prometheus
 ***
 
-**How this repo is structured**
-- `_kube`: contains all the deployment files 
-- `application`: contains all files required to build the docker container
+**Repo is structured**
+
+Repo is divided into two parts: "k8s stateful deployment" and "building NiFi docker image".
+- k8s cluster deployment related files are in `_kube` directory
+
+- All properties files go in `_kube/config` directory
+
+- All templates xml files go in `_kube/templates` directory
+
+- All the scripts for building the NiFi docker image reside in `application/nifi_setup_1.9.2_stateful/build/deploy` directory
+
+- All custom processors jar files reside in `application/nifi_setup_1.9.2_stateful/build/custom_processors`
+
+
 
 **How it works**
 
@@ -85,16 +96,4 @@ Things have changed a lot and we haven't changed out deployment strategy too muc
 
 - We expose nifi metrics in prometheus format
 
-- It also has custom `logback.xml` to handle log in log issue with nifi
-
-**Files layout**
-
-- k8s related files are in `_kube` directory
-
-- All the scripts for deployment reside in `application/nifi_setup_1.9.2_stateful/build/deploy` directory
-
-- All custom processors jar files reside in `application/nifi_setup_1.9.2_stateful/build/custom_processors`
-
-- All properties files go in `_kube/config` directory
-
-- All templates xml files go in `_kube/templates` directory
+- It also has custom `logback.xml` to handle log in log issue with nifi logs
