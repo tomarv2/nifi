@@ -15,15 +15,16 @@ How to deploy a NiFi Cluster (Stateful app in k8s)
 **Repo structure**
 
 Repo is divided into two parts: "k8s stateful deployment" and "building NiFi docker image".
-- k8s cluster deployment related files are in `_kube` directory
 
-- All properties files go in `_kube/config` directory
+- `_kube`: k8s cluster deployment related files
 
-- All templates xml files go in `_kube/templates` directory
+- `_kube/config`: Properties files
 
-- All the scripts for building the NiFi docker image reside in `application/nifi_setup_1.9.2_stateful/build/deploy` directory
+- `_kube/templates`: templates (in xml format)
 
-- All custom processors jar files reside in `application/nifi_setup_1.9.2_stateful/build/custom_processors`
+- `application/nifi_setup_1.9.2_stateful/build/deploy`: All scripts for building the NiFi docker image reside 
+
+- `application/nifi_setup_1.9.2_stateful/build/custom_processors`: All custom processors jar files
 
 
 
