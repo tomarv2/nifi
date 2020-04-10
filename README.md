@@ -79,18 +79,18 @@ steps {
 - When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
 Things have changed a lot and we haven't changed out deployment strategy too much as yet.
 
-- All this exposes your nifi metrics in prometheus format in case you want to view them
+- We expose nifi metrics in prometheus format
 
-- It also has custom logback.xml to handle log in log issue with nifi
+- It also has custom `logback.xml` to handle log in log issue with nifi
 
 **Files layout**
 
-- k8s related files are in _kube directory
+- k8s related files are in `_kube` directory
 
-- All the scripts for deployment reside in build/deploy directory
+- All the scripts for deployment reside in `application/nifi_setup_1.9.2_stateful/build/deploy` directory
 
-- All the custom processors jar sit in build/custom_processors
+- All custom processors jar files reside in `application/nifi_setup_1.9.2_stateful/build/custom_processors`
 
-- All properties files go in config directory
+- All properties files go in `_kube/config` directory
 
-- All templates xml files go in templates directory
+- All templates xml files go in `_kube/templates` directory
