@@ -114,6 +114,8 @@ steps {
 
 - Custom `logback.xml` to handle log in log issue with nifi logs(not sure if this is resolved in the latest version)
 
+***
+
 **Tip**
 
 - The best way to use k8s related files just search and replace `sample-sync` with the required name and you are ready to go.
