@@ -25,8 +25,7 @@ Repo is divided into two parts: "k8s stateful deployment" and "building NiFi doc
 - `application/nifi_setup_1.9.2_stateful/build/deploy`: All scripts for building the NiFi docker image reside 
 
 - `application/nifi_setup_1.9.2_stateful/build/custom_processors`: All custom processors jar files
-
-
+***
 
 **How it works**
 
