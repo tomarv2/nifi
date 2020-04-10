@@ -5,7 +5,7 @@
 
 Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
 
-When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
+When we initially started deploying NiFi it was version on 1.5, k8s support for NiFi was not that great.
 Things have changed a lot since then.
 
 ***
