@@ -94,6 +94,8 @@ steps {
 - When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
 Things have changed a lot and we haven't changed out deployment strategy too much as yet.
 
+- We are also using a headless service
+
 - We expose nifi metrics in prometheus format
 
 - It also has custom `logback.xml` to handle log in log issue with nifi logs
