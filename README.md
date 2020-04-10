@@ -1,5 +1,8 @@
 
 **NiFi deployment & CICD**
+
+![Image description](https://files.gitter.im/tomarv2/ll1D/Screen-Shot-2020-04-10-at-3.31.48-PM.png)
+
 ***
 
 Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
