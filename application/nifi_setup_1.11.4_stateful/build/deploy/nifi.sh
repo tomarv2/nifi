@@ -316,7 +316,10 @@ run() {
     if [ "$1" = "run" ]; then
       # Use exec to handover PID to RunNiFi java process, instead of foking it as a child process
       run_nifi_cmd="exec ${run_nifi_cmd}"
+      #
       # handling logging moving from FileAppender to ConsoleAppender
+      # NEW logback.xml file
+      #
       mv /opt/deploy/logback.xml ${NIFI_HOME}/conf/logback.xml
     fi
 

@@ -1,15 +1,27 @@
 
-**NiFi deployment**
+**NiFi deployment & CICD**
 ***
 
-How to deploy a NiFi Cluster (Stateful app in k8s)
+Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
+
+When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
+Things have changed a lot since then.
+
+This repo addresses two main concerns:
+
+1. How to Deploy NiFi as a StatefulSet application
+2. How to do CICD
+
 ***
 
 **Pre-reqs**
 - k8s cluster
 - Zookeeper to maintain NiFi state outside cluster
 - Persistent disk
-- Prometheus
+- Prometheus 
+  - Two good options for exporting nifi metrics in prometheus supported format:
+    - https://github.com/msiedlarek/nifi_exporter - haven't tried it as yet
+    - https://github.com/mkjoerg/nifi-prometheus-reporter - tested & in use
 ***
 
 **Repo structure**
@@ -22,14 +34,12 @@ Repo is divided into two parts: "k8s stateful deployment" and "building NiFi doc
 
 - `_kube/templates`: templates (in xml format)
 
-- `application/nifi_setup_1.9.2_stateful/build/deploy`: All scripts for building the NiFi docker image reside 
+- `application/nifi_setup_1.11.4_stateful/build/deploy`: All scripts for building the NiFi docker image reside 
 
-- `application/nifi_setup_1.9.2_stateful/build/custom_processors`: All custom processors jar files
+- `application/nifi_setup_1.11.4_stateful/build/custom_processors`: All custom processors jar files
 ***
 
-**How it works**
-
-As part of the CICD process, user makes a commit to a branch and it triggers a build.
+**CICD process**
 
 - As its stateful app, we had to make some adjustments to our rollout, with every run:
 
@@ -90,12 +100,21 @@ steps {
    
 **Note**
 
-- Tested with python 2.7
-- When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
-Things have changed a lot and we haven't changed out deployment strategy too much as yet.
+- Tested with python 2.7 (Working on upgrading to work with 3.6)
 
 - We are also using a headless service
 
 - We expose nifi metrics in prometheus format
 
-- It also has custom `logback.xml` to handle log in log issue with nifi logs
+- Update  `_kube/statefulset.yaml` with right information
+
+- `nifi_setup_1.11.4_stateful/build/deploy/nifi.sh` points to custom `logback.xml` file
+
+- Custom `logback.xml` to handle log in log issue with nifi logs(not sure if this is resolved in the latest version)
+
+- You will notice the `annotations` in `Statefulset.yaml` file, we are exporting metrics and logs to Datadog
+
+**Tip**
+
+- The best to rename k8s config files is to search and replace `sample-sync` with the required name
+
