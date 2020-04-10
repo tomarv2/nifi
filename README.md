@@ -1,7 +1,7 @@
 
 **NiFi deployment & CICD**
 
-![Image description](https://files.gitter.im/tomarv2/Re3v/Screen-Shot-2020-04-10-at-3.38.16-PM.png)
+![Image description](https://files.gitter.im/tomarv2/gEzT/nifi_jenkins.png)
 
 ***
 
