@@ -12,11 +12,15 @@ How to deploy a NiFi Cluster (Stateful app in k8s)
 - Prometheus
 ***
 
+**How this repo is structured**
+- `_kube`: contains all the deployment files 
+- `application`: contains all files required to build the docker container
+
 **How it works**
 
 As part of the CICD process, user makes a commit to a branch and it triggers a build.
 
-- As its stateful app, we had to make some adjustments to our rollout, with every run we are:
+- As its stateful app, we had to make some adjustments to our rollout, with every run:
 
  - Delete the stateful app
 
