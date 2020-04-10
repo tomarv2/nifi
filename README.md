@@ -116,5 +116,5 @@ steps {
 
 **Tip**
 
-- The best to rename k8s config files is to search and replace `sample-sync` with the required name
+- The best way to use k8s related files just search and replace `sample-sync` with the required name and you are ready to go.
 
