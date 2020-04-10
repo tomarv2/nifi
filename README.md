@@ -1,15 +1,83 @@
 
-**kubernetes-nifi-cluster**
+**NiFi deployment**
+***
 
-A nifi cluster running in kubernetes.
+How to deploy a NiFi Cluster (Stateful app in k8s)
+***
 
-I have tested it in nifi 1.7, will try it with 1.9 soon.
+**Pre-reqs**
+- k8s cluster
+- Zookeeper to maintain NiFi state outside cluster
+- Persistent disk
+- Prometheus
+***
 
-**Prerequisites**
+**How it works**
 
-- A running zookeeper cluster, for production deployment I would recommend a 3 node zk cluzter
+As part of the CICD process, user makes a commit to a branch and it triggers a build.
 
-- This deploy NIFI on AWS EC2 k8s with PV or on k8s in VMWare
+- As its stateful app, we had to make some adjustments to our rollout, with every run we are:
+
+ - Delete the stateful app
+
+```sh "kubectl delete --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true statefulsets ${env.serviceName} --cascade=false"```
+
+***
+
+-  Delete the stateful pods
+
+```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pods -l cluster=${env.serviceName} -n ${env.NameSpace} --force --grace-period=0"```
+
+***
+
+- Delete NiFi PVC
+
+```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pvc -l cluster=${env.serviceName} -n ${env.NameSpace} "```
+
+***
+
+- Deploy NiFi Statefulset:
+
+```
+steps {
+    script {
+        try {
+            withCredentials([usernamePassword(credentialsId: 'k8s_cluster_pwd_qa', passwordVariable: 'k8s_pwd', usernameVariable: 'k8s_user')]) {
+                sh "kubectl create --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true -f _kube/qa/statefulset.yaml"
+                sh("eval \$(kubectl describe svc ${env.serviceName} --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true |grep -i nodeport |grep -i web |grep -v hook |awk {'print \$3'}|cut -f1 -d '/' > NodePort)")
+                script {
+                    env.NODEPORT = readFile('NodePort')
+                    sh "cat NodePort"
+                }
+            }
+        }
+        catch (exc) {sh 'echo statefulset does not exist...'}
+    }
+}
+```
+***
+
+- Deploy NiFi Template
+
+***
+
+- Deploy Monitoring
+
+***
+
+**How to run**
+
+    - python deploy_nifi.py <nifi_url> <repo location of templates> <template_name><project_name>
+    
+    - python deploy_nifi.py http://nifi.services.tomarv2.com:80 http://varun.tomarv2.com/projects/raw/templates nifi-template.xml application_name
+
+***
+   
+**Note**
+
+- Tested with python 2.7
+- When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
+Things have changed a lot and we haven't changed out deployment strategy too much as yet.
 
 - All this exposes your nifi metrics in prometheus format in case you want to view them
 
@@ -26,34 +94,3 @@ I have tested it in nifi 1.7, will try it with 1.9 soon.
 - All properties files go in config directory
 
 - All templates xml files go in templates directory
-
-
-**Follow below steps to setup NiFi environment:**
-
-How we deploy our NiFi stateful application on AWS k8s
-
-- Update **line 54** in statefulset.yaml file (located under **_kube**) to point to the right url **(RAW URL)**
-
-- Put your NiFi templates in **templates** directory and properties file in **config** directory
-
-For any questions, please drop an email to devopsac@gmail.com
-
-**How to Deploy**
-
-- kubectl --kubeconfig kubeconfig.yaml apply --insecure-skip-tls-verify=true -f _kube/statefulset.yaml"
-- sh "wget <repo_url>/build/deploy/controller_services.py"
-- sh "wget <repo_url>/build/deploy/deploy_nifi.py"
-- sh "wget <repo_url>/build/deploy/DeployTemplateBase.py"
-- sh "wget <repo_url>/build/deploy/parse_yaml.py"
-- sh "wget <repo_url>/build/deploy/setup_connection.py"
-//sh "wget <repo_url>/build/deploy/requirements.txt"
-- sh "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py; sudo python get-pip.py"
-- sh "sudo pip install gitpython"
-- sh "sudo yum install -y epel-release jq"
-//sh "sudo pip install -r requirements.txt"
-- sh "python deploy_nifi.py ${nifiUrl} ${serviceName} ${WORKSPACE}" 
-}
-
-**Note**
-
-There is some cleanup to do, this files will work as. I have been using them in production for over a year.

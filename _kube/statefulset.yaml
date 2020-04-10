@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: sample-sync
-  namespace: engr
+  namespace: devops
 spec:
   serviceName: sample-sync-headless
   replicas: 2
@@ -33,7 +33,7 @@ spec:
       - name: aws-ecr-registry
       containers:
       - name: sample-sync
-        image: devops.dkr.ecr.us-west-2.amazonaws.com/devops/nifi-1.7.0:v1-stateful
+        image: devops.dkr.ecr.us-west-2.amazonaws.com/devops/.tomarv2.com.0:v1-stateful
         env:
         - name: CLUSTER_NAMESPACE
           valueFrom:
@@ -49,17 +49,17 @@ spec:
             echo 'nameserver x.x.x.x' > /etc/resolv.conf;
             echo "search sample-sync-headless.${CLUSTER_NAMESPACE}.svc.cluster.local ${CLUSTER_NAMESPACE}.svc.cluster.local svc.cluster.local cluster.local" >> /etc/resolv.conf;
             echo 'options ndots:5' >> /etc/resolv.conf;
-            sed -i -e "s|^nifi.web.http.host=.*$|nifi.web.http.host=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
-            sed -i -e "s|^nifi.remote.input.host=.*$|nifi.remote.input.host=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
-            sed -i -e "s|^nifi.cluster.node.address=.*$|nifi.cluster.node.address=`hostname`|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.web.http.host=.*$|nifi.web.http.host=`hostname`|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.remote.input.host=.*$|nifi.remote.input.host=`hostname`|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.cluster.node.address=.*$|nifi.cluster.node.address=`hostname`|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
             echo "### DO NOT CHANGE ANYTHING ABOVE THIS LINE ###" > /dev/null;
             wget http://<application url> -O /tmp/application.properties;
-            sed -i -e "s|^nifi.variable.registry.properties=.*$|nifi.variable.registry.properties=/tmp/application.properties|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
-            sed -i -e "s|^nifi.zookeeper.connect.string=.*$|nifi.zookeeper.connect.string=zk.devops.com:2181|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
-            sed -i -e "s|^nifi.zookeeper.root.node=.*$|nifi.zookeeper.root.node=/sample-sync|" /opt/nifi/nifi-1.7.0/conf/nifi.properties;
-            sed -i -e "s|^java.arg.2=.*$|java.arg.2=-Xms2g|" /opt/nifi/nifi-1.7.0/conf/bootstrap.conf;
-            sed -i -e "s|^java.arg.3=.*$|java.arg.3=-Xmx2g|" /opt/nifi/nifi-1.7.0/conf/bootstrap.conf;
-            /opt/nifi/nifi-1.7.0/bin/nifi.sh run
+            sed -i -e "s|^nifi.variable.registry.properties=.*$|nifi.variable.registry.properties=/tmp/application.properties|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.zookeeper.connect.string=.*$|nifi.zookeeper.connect.string=zk.devops.com:2181|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
+            sed -i -e "s|^nifi.zookeeper.root.node=.*$|nifi.zookeeper.root.node=/sample-sync|" /opt/nifi/nifi-1.9.0/conf/nifi.properties;
+            sed -i -e "s|^java.arg.2=.*$|java.arg.2=-Xms2g|" /opt/nifi/nifi-1.9.0/conf/bootstrap.conf;
+            sed -i -e "s|^java.arg.3=.*$|java.arg.3=-Xmx2g|" /opt/nifi/nifi-1.9.0/conf/bootstrap.conf;
+            /opt/nifi/nifi-1.9.0/bin/nifi.sh run
         securityContext:
           privileged: true
         ports:

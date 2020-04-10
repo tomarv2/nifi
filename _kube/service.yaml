@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: sample-sync
-  namespace: engr
+  namespace: devops
   labels:
     cluster: sample-sync
 spec:
@@ -23,7 +23,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: sample-sync-headless
-  namespace: dataengr
+  namespace: devops
 spec:
   clusterIP: None
   selector:
