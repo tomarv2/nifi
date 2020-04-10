@@ -10,7 +10,7 @@ Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applica
 When we initially started deploying NiFi it was version on 1.5, so k8s support was not that great.
 Things have changed a lot since then.
 
-This repo addresses two main concerns:
+**This repo addresses two main concerns:**
 
 1. How to Deploy NiFi as a StatefulSet application
 2. How to do CICD
