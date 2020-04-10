@@ -43,25 +43,25 @@ Repo is divided into two parts: "k8s stateful deployment" and "building NiFi doc
 
 - As its stateful app, we had to make some adjustments to our rollout, with every run:
 
- - Delete the stateful app
+ - Delete the Statefulset app
 
 ```sh "kubectl delete --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true statefulsets ${env.serviceName} --cascade=false"```
 
 ***
 
--  Delete the stateful pods
+-  Delete the Statefulset pods
 
 ```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pods -l cluster=${env.serviceName} -n ${env.NameSpace} --force --grace-period=0"```
 
 ***
 
-- Delete NiFi PVC
+- Delete PVC
 
 ```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pvc -l cluster=${env.serviceName} -n ${env.NameSpace} "```
 
 ***
 
-- Deploy NiFi Statefulset:
+- Deploy Statefulset
 
 ```
 steps {
