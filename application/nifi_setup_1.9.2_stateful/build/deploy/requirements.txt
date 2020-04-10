@@ -9,7 +9,7 @@ idna==2.6
 Jinja2==2.10
 MarkupSafe==1.0
 prometheus-client==0.1.1
-PyYAML==3.12
+PyYAML==5.1
 requests==2.18.4
 smmap2==2.0.3
 urllib3==1.22
