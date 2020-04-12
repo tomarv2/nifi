@@ -11,7 +11,7 @@ temp_file = '/tmp/setup_connection.txt'
 # parse_sourceGroupId = '"Dash_Company_DeltaID"'
 # parse_destinationId = '"RemoteInputPort_company"'
 # parse_destinationGroupId = '"/remote-process-groups/'
-# nifi_api_url = 'http://nifi.tomarv2.com/nifi-api'
+# nifi_api_url = 'http://nifi.demo.com/nifi-api'
 
 
 def get_dict_for_comm(parse_connections,

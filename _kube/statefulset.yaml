@@ -33,7 +33,7 @@ spec:
       - name: aws-ecr-registry
       containers:
       - name: sample-sync
-        image: devops.dkr.ecr.us-west-2.amazonaws.com/devops/.tomarv2.com.0:v1-stateful
+        image: devops.dkr.ecr.us-west-2.amazonaws.com/devops/.demo.com.0:v1-stateful
         env:
         - name: CLUSTER_NAMESPACE
           valueFrom:

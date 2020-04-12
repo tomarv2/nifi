@@ -1,7 +1,7 @@
 
 **NiFi deployment & CICD**
 
-![Image description](https://files.gitter.im/tomarv2/gEzT/nifi_jenkins.png)
+![Image description](https://files.gitter.im/demo/gEzT/nifi_jenkins.png)
 
 Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
 
@@ -48,19 +48,19 @@ Repo is divided into two parts: "k8s stateful deployment" and "building NiFi doc
 
  - Delete the Statefulset app
 
-```sh "kubectl delete --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true statefulsets ${env.serviceName} --cascade=false"```
+```sh "kubectl delete --namespace=${env.NameSpace} --server='https://qak8s-master.demo.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true statefulsets ${env.serviceName} --cascade=false"```
 
 ***
 
 -  Delete the Statefulset pods
 
-```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pods -l cluster=${env.serviceName} -n ${env.NameSpace} --force --grace-period=0"```
+```sh "kubectl delete --server='https://qak8s-master.demo.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pods -l cluster=${env.serviceName} -n ${env.NameSpace} --force --grace-period=0"```
 
 ***
 
 - Delete PVC
 
-```sh "kubectl delete --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pvc -l cluster=${env.serviceName} -n ${env.NameSpace} "```
+```sh "kubectl delete --server='https://qak8s-master.demo.com' --username=${k8s_user} --password=${k8s_pwd}  --insecure-skip-tls-verify=true pvc -l cluster=${env.serviceName} -n ${env.NameSpace} "```
 
 ***
 
@@ -71,8 +71,8 @@ steps {
     script {
         try {
             withCredentials([usernamePassword(credentialsId: 'k8s_cluster_pwd_qa', passwordVariable: 'k8s_pwd', usernameVariable: 'k8s_user')]) {
-                sh "kubectl create --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true -f _kube/qa/statefulset.yaml"
-                sh("eval \$(kubectl describe svc ${env.serviceName} --namespace=${env.NameSpace} --server='https://qak8s-master.tomarv2.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true |grep -i nodeport |grep -i web |grep -v hook |awk {'print \$3'}|cut -f1 -d '/' > NodePort)")
+                sh "kubectl create --namespace=${env.NameSpace} --server='https://qak8s-master.demo.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true -f _kube/qa/statefulset.yaml"
+                sh("eval \$(kubectl describe svc ${env.serviceName} --namespace=${env.NameSpace} --server='https://qak8s-master.demo.com' --username=${k8s_user} --password=${k8s_pwd} --insecure-skip-tls-verify=true |grep -i nodeport |grep -i web |grep -v hook |awk {'print \$3'}|cut -f1 -d '/' > NodePort)")
                 script {
                     env.NODEPORT = readFile('NodePort')
                     sh "cat NodePort"
@@ -97,7 +97,7 @@ steps {
 
     - python deploy_nifi.py <nifi_url> <repo location of templates> <template_name><project_name>
     
-    - python deploy_nifi.py http://nifi.services.tomarv2.com:80 http://varun.tomarv2.com/projects/raw/templates nifi-template.xml application_name
+    - python deploy_nifi.py http://nifi.services.demo.com:80 http://varun.demo.com/projects/raw/templates nifi-template.xml application_name
 
 ***
    
