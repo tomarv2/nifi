@@ -147,5 +147,5 @@ demo$ minikube service list
 
 ```
 demo$ minikube addons enable ingress
-🌟  The 'ingress' addon is enabled
+The 'ingress' addon is enabled
 ```
