@@ -15,10 +15,26 @@ spec:
       port: 8082
     - name: misc
       port: 9001
+  #--------------------------------------
+  #
+  # NOTE: I am using NodePort to connect to NiFi cluster
+  # Tested in behind AWS ELB
+  # If you plan to use Ingress controller comment the line: "type: NodePort"
+  #
+  #--------------------------------------
+  type: NodePort
   selector:
     cluster: sample-sync
 ---
-
+#--------------------------------------
+#
+# NOTE: HEADLESS service is not required if you are deploying 1 node NiFi
+#
+# I am using HEADLESS "With selectors" option
+#
+# https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
+#
+#--------------------------------------
 kind: Service
 apiVersion: v1
 metadata:

@@ -7,7 +7,30 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
  rules:
-  - host: sample-sync.ds.aws.devops.com
+  #--------------------------------------
+  #
+  # NOTE: ENSURE YOU HAVE ENABLED INGRESS CONTROLLED CONFIGURED
+  # BEFORE DEPLOYING INGRESS
+  #
+  # I am using NodePort to connect to NiFi cluster
+  # Tested in behind AWS ELB
+  #
+  # Update the "host" to the correct value
+  #
+  # For minikube:
+  # - Deploy ingress
+  #
+  # - $ kubectl get ingress -A
+  #   NAMESPACE   NAME          HOSTS      ADDRESS        PORTS   AGE
+  #   devops      sample-sync   demo.com   192.168.64.2   80      2m55s
+  #
+  # - Update /etc/hosts with:
+  # - 192.168.64.2 demo.com
+  #
+  # - If you browse "demo.com/nifi" you should see your nifi cluster running
+  #
+  #--------------------------------------
+  - host: demo.com
     http:
       paths:
       - path: /
