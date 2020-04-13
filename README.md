@@ -1,7 +1,9 @@
 
 **NiFi deployment & CICD**
 
-![Image description](https://files.gitter.im/tomarv2/gEzT/nifi_jenkins.png)
+<p align="center">
+  <img src="https://files.gitter.im/tomarv2/gEzT/nifi_jenkins.png">
+</p>
 
 Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
 
@@ -154,5 +156,7 @@ The 'ingress' addon is enabled
 
 A Headless Service is a service when you don’t need load-balancing and a single Service IP. Instead of load-balancing it will return the IPs of the attached Pod. Headless Services do not have a Cluster IP associated. Request will not be proxied by kube-proxy, instead NiFi will handle the service discovery.
 
-![Image description](https://files.gitter.im/tomarv2/KRXn/Screen-Shot-2020-04-12-at-6.33.46-PM.png)
+<p align="center">
+  <img src="https://files.gitter.im/tomarv2/KRXn/Screen-Shot-2020-04-12-at-6.33.46-PM.png">
+</p>
 
