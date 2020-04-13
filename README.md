@@ -149,3 +149,10 @@ demo$ minikube service list
 demo$ minikube addons enable ingress
 The 'ingress' addon is enabled
 ```
+
+**Headless service**
+
+A Headless Service is a service when you don’t need load-balancing and a single Service IP. Instead of load-balancing it will return the IPs of the attached Pod. Headless Services do not have a Cluster IP associated. Request will not be proxied by kube-proxy, instead NiFi will handle the service discovery.
+
+![Image description](https://files.gitter.im/tomarv2/yE8b/Screen-Shot-2020-04-12-at-6.33.59-PM.png)
+
