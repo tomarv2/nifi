@@ -160,3 +160,15 @@ A Headless Service is a service when you don’t need load-balancing and a singl
   <img src="https://files.gitter.im/tomarv2/KRXn/Screen-Shot-2020-04-12-at-6.33.46-PM.png">
 </p>
 
+
+**Note**
+
+- If you find any issues or wants to see anything specific please open a issue.
+
+**Contact**
+
+https://twitter.com/VarunTomar2019
+
+### License
+
+[MIT](LICENSE)

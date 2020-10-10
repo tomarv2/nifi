@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: demo-sync
+  namespace: demo
+  labels:
+    cluster: demo-sync
+spec:
+  ports:
+    - name: prometheus-jmx
+      port: 8079
+    - name: web
+      port: 8080
+    - name: cluster
+      port: 8082
+    - name: misc
+      port: 9001
+  type: NodePort
+  selector:
+    cluster: demo-sync
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: demo-sync-headless
+  namespace: demo
+spec:
+  clusterIP: None
+  selector:
+    cluster: demo-sync
+  ports:
+    - protocol: TCP
+      port: 8081
+

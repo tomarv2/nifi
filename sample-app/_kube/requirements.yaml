@@ -1,0 +1,83 @@
+###############################################################################
+# NOTE:
+    # for microservice add project as:       testrepo-service
+    # for spark add project as:              testrepo-transform
+    # for nifi add project as:               testrepo-sync
+
+###############################################################################
+
+# MONITORING
+
+###############################################################################
+monitoring:
+  project: # NOTE: append project name with: service, transform or sync
+    - 'demo-sync'
+
+  namespace:  # available options: demo and services
+    - 'demo'
+
+  notification:
+    email:
+      - demo@demo.com
+
+    pagerduty: # only applicable for prod
+      service_key:
+        - 'demo-key' # update to the right service key
+    slack:
+      channel:
+        - "demo-sync" # update to the right slack channel
+
+  target:
+    aur-qa:
+      - http://demo-sync.services.demo.com
+    aur-stg:
+      - NA
+    aur:
+      - NA
+    aws-stg:
+      - NA
+    aws:
+      - http://demo-sync.demo.com
+
+  elastalert:
+    query:
+      aur-qa:
+        - NA_ELASTALERT
+      aur-stg:
+        - NA_ELASTALERT
+      aur:
+        - NA_ELASTALERT
+      aws-stg:
+        - NA_ELASTALERT
+      aws:
+        - NA_ELASTALERT
+
+  tools:
+    - prometheus
+    - alertmanager
+    - elastalert
+
+  modules:
+    - blackbox
+
+###############################################################################
+
+# CLEANUP KAFKA/ZOOEKEPER
+
+###############################################################################
+kafka: # (default value is No) only applicable in Dev and QA
+  delete_topic: No # please write YES_DELETE to confirm topic deletion
+  server: qakafka.demo.com
+  topic:
+   - test-topic01
+   - test-topic02
+
+zookeeper:
+  server: qazk.demo.com:2181/kafka
+
+###############################################################################
+
+# SPINNAKER
+
+###############################################################################
+

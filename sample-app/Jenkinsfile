@@ -1,0 +1,92 @@
+#!/usr/bin/env groovy
+
+@Library('demo-library') _
+
+pipeline {
+
+    agent { label 'demo' }
+
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 1, unit: 'HOURS')
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
+
+    environment {
+        channel                                 = "#vt-test"
+        scmUrl                                  = sh(returnStdout: true, script: 'git config remote.origin.url').trim()
+        nameSpace                               = 'demo'
+        stgNameSpace                            = 'stg-demo'
+        serviceName                             = 'demo-sync'
+        devNifiUrl                              = "http://demo-sync.test.demo.com"
+        prodNifiUrl                             = "http://demo-sync.demo.com"
+    }
+
+    stages {
+        stage('Start') {
+            steps {
+                sendStartBuildNotification(env.channel)
+            }
+        }
+        stage('Dev: Prepare NiFi') {
+            when {
+                anyOf {
+                    branch "feature/**"
+                    branch "feature/*"
+                }
+            }
+            steps {
+                checkExistingStatefulset('dev', env.nameSpace)
+                deleteStatefulset('dev', env.nameSpace, env.serviceName)
+                deleteExistingPods('dev', env.nameSpace, env.serviceName)
+                deletePVC('dev', env.nameSpace, env.serviceName)
+                deployStatefulset('dev', env.nameSpace, env.serviceName)
+            }
+        }
+        stage('Prod: Prepare NiFi') {
+            when {
+                anyOf {
+                    branch "release"
+                    branch "release*"
+                }
+            }
+            steps {
+                checkExistingStatefulset('prod', env.nameSpace)
+                deleteStatefulset('prod', env.nameSpace, env.serviceName)
+                deleteExistingPods('prod', env.nameSpace, env.serviceName)
+                deletePVC('prod', env.nameSpace, env.serviceName)
+                deployStatefulset('prod', env.nameSpace, env.serviceName)
+            }
+        }
+        stage('Dev: NiFi Deploy Template') {
+            when {
+                anyOf {
+                    branch "feature/**"
+                    branch "feature/*"
+                }
+            }
+            steps {
+                deployNifiTemplate('dev', env.devNifiUrl, env.serviceName)
+                sh "echo 'NiFi Url: echo ${env.devNifiUrl}/nifi/'"
+            }
+        }
+        stage('Prod: NiFi Deploy Template') {
+            when {
+                anyOf {
+                    branch "release"
+                    branch "release*"
+                }
+            }
+            steps {
+                deployNifiTemplate('prod', env.prodNifiUrl, env.serviceName)
+                sh "echo 'NiFi Url: echo ${env.prodNifiUrl}/nifi/'"
+            }
+        }
+    }
+    post {
+        always {
+            sendEndBuildNotification(currentBuild.currentResult, env.channel)
+        }
+    }
+}
+
