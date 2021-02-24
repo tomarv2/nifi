@@ -1,3 +1,15 @@
+<p align="center">
+    <a href="https://www.apache.org/licenses/LICENSE-2.0" alt="GitHub tag">
+        <img src="https://img.shields.io/github/license/tomarv2/nifi" /></a>
+    <a href="https://github.com/tomarv2/nifi/tags" alt="GitHub tag">
+        <img src="https://img.shields.io/github/v/tag/tomarv2/nifi" /></a>
+    <a href="https://stackoverflow.com/users/6679867/tomarv2" alt="Stack Exchange reputation">
+        <img src="https://img.shields.io/stackexchange/stackoverflow/r/6679867"></a>
+    <a href="https://discord.gg/XH975bzN" alt="chat on Discord">
+        <img src="https://img.shields.io/discord/813961944443912223?logo=discord"></a>
+    <a href="https://twitter.com/intent/follow?screen_name=varuntomar2019" alt="follow on Twitter">
+        <img src="https://img.shields.io/twitter/follow/varuntomar2019?style=social&logo=twitter"></a>
+</p>
 
 **NiFi deployment & CICD**
 
@@ -164,11 +176,3 @@ A Headless Service is a service when you don’t need load-balancing and a singl
 **Note**
 
 - If you find any issues or wants to see anything specific please open a issue.
-
-**Contact**
-
-https://twitter.com/VarunTomar2019
-
-### License
-
-[MIT](LICENSE)
