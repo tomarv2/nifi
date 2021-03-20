@@ -120,8 +120,6 @@ steps {
 ***
 ### Note:
 
-- Tested with python 2.7 (Working on upgrading to work with 3.6)
-
 - We are also using a headless service
 
 - We expose nifi metrics in prometheus format
