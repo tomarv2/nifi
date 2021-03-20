@@ -20,7 +20,8 @@
 Deploy a NiFi cluster as StatefulSet in k8s and continuous deployment of applications.
 
 ***
-Covering two use cases:
+### Covering two use cases:
+
 - Setting up NiFi in minikube (this is what we provide to developers as a playground).
 - Production ready deployment.
 
@@ -31,8 +32,8 @@ Things have changed a lot since then.
 ***
 ### This repo addresses two main concerns:
 
-1. How to Deploy NiFi as a StatefulSet application
-2. How to do CICD
+-  How to Deploy NiFi as a StatefulSet application
+-  How to do CICD
 
 ***
 ### Pre-reqs
@@ -46,7 +47,7 @@ Things have changed a lot since then.
 ***
 ### Repo structure
 
-:wave: Repo is divided into two parts: "k8s stateful deployment" and "building NiFi docker image".
+:wave: Repo is divided into two parts: `k8s stateful deployment` and `building NiFi docker image`.
 
 - `_kube`: k8s cluster deployment related files
 
@@ -105,17 +106,16 @@ steps {
 ```
 
 ***
-- Deploy NiFi Template
-
-***
-- Deploy Monitoring
+- Deploy NiFi Template & Deploy Monitoring
 
 ***
 ### How to run
 
-    - python deploy_nifi.py <nifi_url> <repo location of templates> <template_name><project_name>
+```
+- python deploy_nifi.py <nifi_url> <repo location of templates> <template_name><project_name>
     
-    - python deploy_nifi.py http://nifi.services.demo.com:80 http://varun.demo.com/projects/raw/templates nifi-template.xml application_name
+- python deploy_nifi.py http://nifi.services.demo.com:80 http://varun.demo.com/projects/raw/templates nifi-template.xml application_name
+```
 
 ***
 ### Note:
