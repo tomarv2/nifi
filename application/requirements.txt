@@ -1,9 +1,9 @@
 #2.7
-elasticsearch==5.4.0
-requests==2.20.0
-enum==0.4.6
+#elasticsearch#==5.4.0
+#requests#==2.20.0
+enum#==0.4.6
 #3.0
-elasticsearch==5.4.0
-requests==2.20.0
+elasticsearch#==5.4.0
+requests#==2.20.0
 gitpython
 pyyaml
