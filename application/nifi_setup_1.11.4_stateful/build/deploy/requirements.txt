@@ -10,7 +10,7 @@ Jinja2==2.11.3
 MarkupSafe==1.0
 prometheus-client==0.1.1
 PyYAML==5.4
-requests==2.20.0
+requests==2.32.2
 smmap2==2.0.3
 urllib3==1.26.5
 virtualenv==15.1.0
